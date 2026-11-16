@@ -1,0 +1,475 @@
+/*
+ * AI 學習筆記：全站樣式
+ * 視覺概念是學生的筆記本：白紙、左側紅色邊線、藍筆標題、紅筆改錯、螢光筆畫重點。
+ * 顏色與字型只能使用 :root 的變數（見 AGENTS.md 第 4 節）。
+ */
+
+:root {
+  /* 紙與筆 */
+  --paper: #fcfdfe;
+  --paper-shade: #f0f4f9; /* 範例區塊的底色 */
+  --rule: #d6e0ed; /* 橫線 */
+  --ink: #1a1f2b; /* 內文 */
+  --pencil: #5b6475; /* 次要資訊 */
+  --pen-blue: #1d3fa6; /* 標題、連結 */
+  --pen-red: #c8322b; /* 邊線、常見誤區 */
+  --highlighter: #ffe873; /* 本頁重點 */
+
+  /* 字型 */
+  --font-hand: "LXGW WenKai TC", "Kaiti TC", "BiauKai", "DFKai-SB", "KaiTi", serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Consolas, "Noto Sans Mono CJK TC", monospace;
+
+  /* 版面 */
+  --margin: 6.5rem; /* 紅線左側的頁邊欄，放編號 */
+  --gutter: 1.75rem; /* 紅線到內文的距離 */
+  --measure: 40rem; /* 內文最大寬度，約 37 個中文字 */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+}
+
+a {
+  color: var(--pen-blue);
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--pen-blue);
+  outline-offset: 3px;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}
+
+code {
+  padding: 0.1em 0.35em;
+  background: var(--paper-shade);
+  font-size: 0.9em;
+}
+
+/* ---------- 頁面骨架：紅色邊線貫穿整頁 ---------- */
+
+.page {
+  position: relative;
+  max-width: calc(var(--margin) + var(--gutter) + var(--measure) + 1.5rem);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem calc(var(--margin) + var(--gutter));
+}
+
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--margin);
+  width: 2px;
+  background: var(--pen-red);
+  opacity: 0.5;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.75rem 0 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-name {
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-header .back {
+  font-size: 0.9375rem;
+}
+
+.site-footer {
+  margin-top: 4rem;
+  color: var(--pencil);
+  font-size: 0.875rem;
+}
+
+/* 頁邊欄的編號：首頁每列與筆記頁標題共用 */
+.note-num {
+  position: absolute;
+  left: calc(-1 * (var(--margin) + var(--gutter)));
+  width: calc(var(--margin) - 1rem);
+  color: var(--pencil);
+  font-family: var(--font-hand);
+  line-height: 1;
+  text-align: right;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0.5rem 0 0;
+  color: var(--pencil);
+  font-size: 0.875rem;
+}
+
+.tag::before {
+  content: "#";
+}
+
+/* ---------- 首頁 ---------- */
+
+.intro {
+  padding: 3rem 0 2.5rem;
+}
+
+.intro h1 {
+  margin: 0 0 1rem;
+  color: var(--pen-blue);
+  font-family: var(--font-hand);
+  font-size: clamp(2.25rem, 6vw, 3.25rem);
+  line-height: 1.2;
+}
+
+.intro p {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.catalog-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.catalog-head h2 {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+}
+
+.tab {
+  padding: 0.25rem 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--pencil);
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--pen-blue);
+}
+
+.tab[aria-pressed="true"] {
+  border-bottom-color: var(--pen-blue);
+  color: var(--pen-blue);
+  font-weight: 500;
+}
+
+.note-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note-row {
+  position: relative;
+  padding: 1.25rem 0 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.note-row .note-num {
+  top: 1.55rem;
+  font-size: 2rem;
+}
+
+.note-row h3 {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.note-row h3 a {
+  text-decoration: none;
+}
+
+.note-row h3 a:hover {
+  text-decoration: underline;
+}
+
+.note-summary {
+  margin: 0.35rem 0 0;
+}
+
+.note-empty {
+  padding: 1.25rem 0;
+  color: var(--pencil);
+}
+
+/* ---------- 筆記頁 ---------- */
+
+.note-header {
+  position: relative;
+  padding: 2.5rem 0 1.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.note-header h1 {
+  margin: 0 0 0.75rem;
+  color: var(--pen-blue);
+  font-family: var(--font-hand);
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1.3;
+}
+
+.note-header .summary {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.note-header .note-num {
+  top: 2.75rem;
+  font-size: 2.6rem;
+}
+
+.note section > h2 {
+  margin: 2.75rem 0 0.75rem;
+  color: var(--pen-blue);
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  line-height: 1.4;
+}
+
+.note h3 {
+  margin: 1.75rem 0 0.25rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.note p {
+  margin: 0.5rem 0;
+}
+
+/* 本頁重點：螢光筆 */
+.key-points {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.key-points li {
+  margin: 0.4rem 0;
+}
+
+mark {
+  padding: 0 0.1em;
+  background: linear-gradient(transparent 55%, var(--highlighter) 55%);
+  color: inherit;
+}
+
+/* 核心概念：比較表 */
+.compare {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.compare th,
+.compare td {
+  padding: 0.6rem 0.75rem 0.6rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.compare thead th {
+  color: var(--pencil);
+  font-weight: 500;
+}
+
+.compare tbody th {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* 核心概念：步驟 (ol.steps) 與條列 (ul.list) */
+.steps,
+.list {
+  margin: 0.5rem 0;
+  padding-left: 1.4rem;
+}
+
+/* 實作範例 */
+.sample {
+  margin: 1.25rem 0;
+}
+
+.sample figcaption {
+  margin-bottom: 0.35rem;
+  color: var(--pencil);
+  font-size: 0.875rem;
+}
+
+.sample pre {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--rule);
+  background: var(--paper-shade);
+  font-size: 0.875rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* 常見誤區：紅筆 */
+.pitfalls {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pitfalls li {
+  margin: 1rem 0;
+}
+
+.pitfalls del {
+  display: block;
+  color: var(--pen-red);
+  font-weight: 500;
+}
+
+.pitfalls p {
+  margin: 0.2rem 0 0;
+}
+
+/* 自我檢核 */
+.check {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.check summary {
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.check p {
+  margin: 0.5rem 0 0 1.1rem;
+}
+
+/* 延伸閱讀 */
+.refs {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.refs li {
+  margin: 0.6rem 0;
+}
+
+/* 上下篇導覽 */
+.note-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.nav-link {
+  text-decoration: none;
+}
+
+.nav-next {
+  grid-column: 2;
+  text-align: right;
+}
+
+.nav-label {
+  display: block;
+  color: var(--pencil);
+  font-size: 0.875rem;
+}
+
+.nav-title {
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+.nav-link:hover .nav-title {
+  text-decoration: underline;
+}
+
+/* ---------- 窄螢幕：頁邊欄收起，編號回到內文 ---------- */
+
+@media (max-width: 720px) {
+  .page {
+    padding: 0 1.1rem 3rem 2.1rem;
+  }
+
+  .page::before {
+    left: 0.9rem;
+  }
+
+  .note-num,
+  .note-row .note-num,
+  .note-header .note-num {
+    position: static;
+    display: block;
+    width: auto;
+    margin-bottom: 0.25rem;
+    font-size: 1.25rem;
+    text-align: left;
+  }
+
+  .note-header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 編號寫在筆記頁的中繼資料裡，窄螢幕時移到標題上方 */
+  .note-header .note-meta {
+    display: contents;
+  }
+
+  .note-header .note-num {
+    order: -1;
+  }
+
+  .compare {
+    font-size: 0.875rem;
+  }
+}

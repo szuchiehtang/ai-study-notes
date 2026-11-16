@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AGENTS.md 與 CLAUDE.md：把專案規則寫給 AI｜AI 學習筆記</title>
+  <meta name="description" content="規則檔讓 AI 每次開工都先知道專案的目的、結構與做法，新頁面才會長得一致。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="note" data-root=".." data-note-id="03">
+<div class="page">
+  <header class="site-header">
+    <a class="site-name" href="../index.html">AI 學習筆記</a>
+    <a class="back" href="../index.html">回到目錄</a>
+  </header>
+
+  <main class="note">
+    <header class="note-header">
+      <h1>AGENTS.md 與 CLAUDE.md：把專案規則寫給 AI</h1>
+      <p class="summary">規則檔讓 AI 每次開工都先知道專案的目的、結構與做法，新頁面才會長得一致。</p>
+      <div id="note-meta" class="note-meta"></div>
+    </header>
+
+    <section id="key-points">
+      <h2>本頁重點</h2>
+      <ul class="key-points">
+        <li>規則檔是寫給 AI 代理 (AI agent) 看的專案說明，<mark>開工時會先被讀進脈絡</mark>。</li>
+        <li>AGENTS.md 是開放格式，內容就是一般的 Markdown；CLAUDE.md 是 Claude Code 讀取的檔案，可以用 <code>@AGENTS.md</code> 匯入同一份規則。</li>
+        <li>好的規則<mark>具體、簡短、可以檢查</mark>。</li>
+        <li>規則檔是脈絡而不是強制設定，<mark>一定要守的規則要另外用腳本檢查</mark>。</li>
+        <li>Vibe coding 做出一頁；規則檔讓第二頁、第十頁還是同一個樣子。</li>
+      </ul>
+    </section>
+
+    <section id="concepts">
+      <h2>核心概念</h2>
+
+      <h3>為什麼需要規則檔</h3>
+      <p>新對話預設不會記得上一次的決定。沒有規則時，第二頁的配色、檔名與結構，全看 AI 當下怎麼猜。</p>
+      <p>規則檔把這些決定寫下來，放在專案根目錄，讓代理在動手之前先讀到。它記錄的是「這個專案要怎麼繼續做下去」。</p>
+
+      <h3>兩種檔案</h3>
+      <table class="compare">
+        <thead>
+          <tr><th></th><th>AGENTS.md</th><th>CLAUDE.md</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>定位</th><td>引導程式代理 (coding agent) 的開放格式，可看成給代理讀的 README</td><td>Claude Code 在每次對話開始時載入的專案指示</td></tr>
+          <tr><th>格式</th><td>一般 Markdown，沒有必填欄位</td><td>一般 Markdown，可用 <code>@路徑</code> 匯入其他檔案</td></tr>
+          <tr><th>位置</th><td>專案根目錄；子資料夾可另放一份，離被編輯檔案最近的優先</td><td>專案根目錄</td></tr>
+        </tbody>
+      </table>
+      <p>Claude Code 的文件建議，專案已經有 AGENTS.md 時，建立一個匯入它的 CLAUDE.md，讓不同工具讀到同一份指示。本站就是這樣做：規則全寫在 AGENTS.md，CLAUDE.md 只有一行 <code>@AGENTS.md</code>。</p>
+
+      <h3>規則檔該寫什麼</h3>
+      <ul class="list">
+        <li>目的：專案為誰而做，什麼才算完成。</li>
+        <li>結構：每個資料夾放什麼。</li>
+        <li>命名與格式：檔名、頁面區塊、資料欄位。</li>
+        <li>流程：新增內容要照哪些步驟。</li>
+        <li>檢查方式：做完要執行什麼指令。</li>
+        <li>禁止事項：哪些檔案不能動。</li>
+      </ul>
+      <p>AI 讀程式碼就看得出來的事不必寫。Claude Code 的文件也提醒，指示越具體、越精簡，越容易被遵守。</p>
+
+      <h3>規則不是強制</h3>
+      <p>依 Claude Code 文件的說明，CLAUDE.md 的內容是被當成脈絡，不是強制執行的設定。所以不能違反的規則要有程式把關。</p>
+      <p>本站用 <code>tools/check.mjs</code> 檢查檔名、區塊順序與連結，規則檔只需要寫「改完要執行它」。</p>
+    </section>
+
+    <section id="example">
+      <h2>實作範例</h2>
+      <figure class="sample">
+        <figcaption>模糊的規則：AI 無從判斷有沒有做到</figcaption>
+        <pre>- 網頁要好看、風格一致。
+- 筆記要寫清楚。</pre>
+      </figure>
+      <figure class="sample">
+        <figcaption>本站 AGENTS.md 的寫法：每一條都能檢查</figcaption>
+        <pre>- 筆記檔名：notes/NN-slug.html。NN 是兩位數流水號，slug 是英文小寫加連字號。
+- 螢光筆 &lt;mark&gt; 只用在「本頁重點」，每點最多標一處。
+- 每次修改後執行 node tools/check.mjs，沒有全部通過就不算完成。</pre>
+      </figure>
+      <figure class="sample">
+        <figcaption>有了規則之後，新增一頁只需要這樣說</figcaption>
+        <pre>請依 AGENTS.md 新增一篇筆記，主題是檢索增強生成 (RAG) 的基本流程。</pre>
+      </figure>
+    </section>
+
+    <section id="pitfalls">
+      <h2>常見誤區</h2>
+      <ul class="pitfalls">
+        <li>
+          <del>規則寫得越詳細越好。</del>
+          <p>冗長的規則檔會稀釋重點。只寫 AI 猜不到、而且猜錯會出問題的事。</p>
+        </li>
+        <li>
+          <del>寫了規則，AI 就一定會照做。</del>
+          <p>規則檔是脈絡而非強制。重要的規則要搭配檢查腳本或測試。</p>
+        </li>
+        <li>
+          <del>規則寫一次就好。</del>
+          <p>專案改了結構而規則沒跟著改，AI 會照著過期的規則做錯。規則檔要和程式一起更新。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="self-check">
+      <h2>自我檢核</h2>
+      <details class="check">
+        <summary>為什麼本站的 CLAUDE.md 只有一行？</summary>
+        <p>它用 @AGENTS.md 匯入規則。內容只維護一份，就不會出現兩個檔案不同步的情況。</p>
+      </details>
+      <details class="check">
+        <summary>把「頁面要整齊」改寫成可以檢查的規則。</summary>
+        <p>例如：每篇筆記固定六個區塊，順序與 id 不可更動。</p>
+      </details>
+      <details class="check">
+        <summary>規則檔與檢查腳本各自負責什麼？</summary>
+        <p>規則檔告訴 AI 該怎麼做；檢查腳本確認做出來的結果符合規則。</p>
+      </details>
+    </section>
+
+    <section id="further-reading">
+      <h2>延伸閱讀</h2>
+      <ol class="refs">
+        <li><a href="https://agents.md/">AGENTS.md 官方網站</a>。格式說明、範例與常見問題，包含多份規則檔衝突時的優先順序。</li>
+        <li><a href="https://code.claude.com/docs/en/memory">Claude Code 文件，Memory 章節</a>。說明 CLAUDE.md 的載入方式、匯入語法，以及如何與 AGENTS.md 搭配。</li>
+      </ol>
+    </section>
+
+    <nav id="note-nav" class="note-nav" aria-label="上一篇與下一篇"></nav>
+  </main>
+
+  <footer class="site-footer">本站每一頁都依專案根目錄的 AGENTS.md 規則製作。</footer>
+</div>
+<script src="../data/notes.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

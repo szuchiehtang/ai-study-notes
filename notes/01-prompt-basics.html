@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>提示工程基礎：把話說清楚｜AI 學習筆記</title>
+  <meta name="description" content="好的提示包含任務、脈絡、範例與輸出格式，寫完還要依結果修改。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="note" data-root=".." data-note-id="01">
+<div class="page">
+  <header class="site-header">
+    <a class="site-name" href="../index.html">AI 學習筆記</a>
+    <a class="back" href="../index.html">回到目錄</a>
+  </header>
+
+  <main class="note">
+    <header class="note-header">
+      <h1>提示工程基礎：把話說清楚</h1>
+      <p class="summary">好的提示包含任務、脈絡、範例與輸出格式，寫完還要依結果修改。</p>
+      <div id="note-meta" class="note-meta"></div>
+    </header>
+
+    <section id="key-points">
+      <h2>本頁重點</h2>
+      <ul class="key-points">
+        <li>模型只讀得到你寫下的文字，<mark>沒寫出來的脈絡它只能猜</mark>。</li>
+        <li>一個完整的提示有四個部分：任務 (task)、脈絡 (context)、範例 (examples)、輸出格式 (output format)。</li>
+        <li>給兩三個示範，通常比用形容詞描述風格更準確，這叫<mark>少樣本提示 (few-shot prompting)</mark>。</li>
+        <li>需要推理的題目，請模型先寫出步驟再給答案，也就是思維鏈 (chain-of-thought)。</li>
+        <li>提示是<mark>改出來的</mark>：看輸出、找落差、補上缺的資訊，再試一次。</li>
+      </ul>
+    </section>
+
+    <section id="concepts">
+      <h2>核心概念</h2>
+
+      <h3>提示工程在做什麼</h3>
+      <p>提示工程 (prompt engineering) 是設計並修改輸入的文字，讓大型語言模型 (large language model, LLM) 穩定產生你要的結果。</p>
+      <p>模型不知道讀者是誰、成品要用在哪裡、什麼才算「好」，這些都要寫出來。一個實用的檢查方法：把提示拿給不熟悉這個任務的同學看，他會有疑問的地方，模型多半也會猜錯。</p>
+
+      <h3>提示的四個部分</h3>
+      <table class="compare">
+        <thead>
+          <tr><th>部分</th><th>要回答的問題</th><th>例子</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>任務</th><td>要模型做什麼？</td><td>把這段課堂逐字稿整理成筆記</td></tr>
+          <tr><th>脈絡</th><td>給誰看？用在哪裡？有什麼限制？</td><td>讀者是沒修過這門課的大一同學</td></tr>
+          <tr><th>範例</th><td>理想的成品長什麼樣子？</td><td>貼上一則自己滿意的筆記</td></tr>
+          <tr><th>輸出格式</th><td>要多長？用什麼結構？</td><td>三個重點，每點不超過 30 字</td></tr>
+        </tbody>
+      </table>
+
+      <h3>少樣本提示與思維鏈</h3>
+      <p>少樣本提示是在提示裡放幾組「輸入與理想輸出」的示範。Brown 等人 (2020) 在 GPT-3 的研究中顯示，大型語言模型只靠提示中的少量示範、不必重新訓練，就能執行許多新任務。</p>
+      <p>思維鏈是讓模型把推理過程寫出來。Wei 等人 (2022) 發現，示範中若包含逐步推理，模型在算術、常識與符號推理題上的表現會明顯提升。把步驟寫出來還有一個好處：你看得出它在哪一步想錯。</p>
+    </section>
+
+    <section id="example">
+      <h2>實作範例</h2>
+      <figure class="sample">
+        <figcaption>修改前：只有任務</figcaption>
+        <pre>幫我整理這份逐字稿。</pre>
+      </figure>
+      <figure class="sample">
+        <figcaption>修改後：任務、脈絡、輸出格式、範例都寫出來</figcaption>
+        <pre>請把下面的課堂逐字稿整理成複習筆記。
+
+脈絡：
+讀者是沒修過這門課的大一同學，會在考前用這份筆記複習。
+老師閒聊與重複的部分可以刪掉，專有名詞第一次出現時請附英文。
+
+輸出格式：
+1. 先用三點列出本堂課重點，每點不超過 30 字。
+2. 接著依主題分段說明，每段加小標題。
+3. 最後出三題自我檢核題，並附答案。
+
+範例（重點的寫法）：
+- 少樣本提示：在提示裡放幾個示範，讓模型照樣子做。
+
+逐字稿：
+（在這裡貼上逐字稿）</pre>
+      </figure>
+      <p>修改後的版本沒有用到任何特殊字眼，只是把原本留在腦中的要求寫了出來。</p>
+    </section>
+
+    <section id="pitfalls">
+      <h2>常見誤區</h2>
+      <ul class="pitfalls">
+        <li>
+          <del>提示寫得越長越好。</del>
+          <p>有用的是與任務相關的資訊。無關的內容會分散重點，也讓你更難找出是哪一句造成問題。</p>
+        </li>
+        <li>
+          <del>只告訴模型「不要」做什麼。</del>
+          <p>直接說要什麼通常更有效。「不要太長」不如「每點不超過 30 字」。</p>
+        </li>
+        <li>
+          <del>寫一次沒得到好結果，就是模型不行。</del>
+          <p>先檢查提示缺了哪個部分。多數時候是脈絡或輸出格式沒寫清楚。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="self-check">
+      <h2>自我檢核</h2>
+      <details class="check">
+        <summary>一個完整的提示包含哪四個部分？</summary>
+        <p>任務、脈絡、範例、輸出格式。</p>
+      </details>
+      <details class="check">
+        <summary>什麼情況適合用少樣本提示？</summary>
+        <p>想要的格式或語氣很難用文字描述，但拿得出幾個示範的時候。</p>
+      </details>
+      <details class="check">
+        <summary>「請寫得專業一點」為什麼不是好的指示？</summary>
+        <p>「專業」沒有可以檢查的標準。應改成具體要求，例如讀者是誰、要引用來源、避免口語用詞。</p>
+      </details>
+    </section>
+
+    <section id="further-reading">
+      <h2>延伸閱讀</h2>
+      <ol class="refs">
+        <li><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview">Anthropic，Prompt engineering overview</a>。官方的提示寫作指引，可依序查閱各項技巧。</li>
+        <li><a href="https://arxiv.org/abs/2005.14165">Brown et al. (2020). Language Models are Few-Shot Learners. NeurIPS 2020</a>。少樣本提示的代表性研究。</li>
+        <li><a href="https://arxiv.org/abs/2201.11903">Wei et al. (2022). Chain-of-Thought Prompting Elicits Reasoning in Large Language Models. NeurIPS 2022</a>。提出思維鏈提示並比較各類推理題的表現。</li>
+      </ol>
+    </section>
+
+    <nav id="note-nav" class="note-nav" aria-label="上一篇與下一篇"></nav>
+  </main>
+
+  <footer class="site-footer">本站每一頁都依專案根目錄的 AGENTS.md 規則製作。</footer>
+</div>
+<script src="../data/notes.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

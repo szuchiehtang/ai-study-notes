@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vibe Coding：用對話把網頁做出來｜AI 學習筆記</title>
+  <meta name="description" content="只描述想要的結果、不讀程式碼的開發方式；適合原型，不適合長期維護。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="note" data-root=".." data-note-id="02">
+<div class="page">
+  <header class="site-header">
+    <a class="site-name" href="../index.html">AI 學習筆記</a>
+    <a class="back" href="../index.html">回到目錄</a>
+  </header>
+
+  <main class="note">
+    <header class="note-header">
+      <h1>Vibe Coding：用對話把網頁做出來</h1>
+      <p class="summary">只描述想要的結果、不讀程式碼的開發方式；適合原型，不適合長期維護。</p>
+      <div id="note-meta" class="note-meta"></div>
+    </header>
+
+    <section id="key-points">
+      <h2>本頁重點</h2>
+      <ul class="key-points">
+        <li>Vibe coding 是<mark>只用自然語言描述需求、直接接受 AI 寫的程式碼</mark>而不逐行審查的開發方式。</li>
+        <li>這個詞由 Andrej Karpathy 在 2025 年 2 月提出，原本講的是週末隨手做的小專案。</li>
+        <li>工作循環是描述、執行、看結果、回饋，<mark>判斷標準是成品而不是程式碼</mark>。</li>
+        <li>適合原型 (prototype) 與一次性的頁面；要長期維護或多人協作時，<mark>得另外補上規則與審查</mark>。</li>
+      </ul>
+    </section>
+
+    <section id="concepts">
+      <h2>核心概念</h2>
+
+      <h3>這個詞的原意</h3>
+      <p>2025 年 2 月 2 日，Andrej Karpathy 在 X 上描述他的一種寫程式方式：把工作完全交給 AI，一律接受它的修改，不再閱讀程式碼差異 (diff)，出錯就把錯誤訊息貼回去。他把這種做法稱為 vibe coding，並說明它適合隨手做、用完即丟的週末專案。</p>
+
+      <h3>與 AI 輔助開發的差別</h3>
+      <p>Simon Willison 在 2025 年 3 月劃了一條界線：用 LLM 做軟體卻不審查它寫的程式碼，才算 vibe coding。如果每一行都讀過、測過、說得出道理，那就是一般的軟體開發，只是有 AI 協助。</p>
+      <table class="compare">
+        <thead>
+          <tr><th></th><th>Vibe coding</th><th>AI 輔助開發 (AI-assisted programming)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>審查程式碼</th><td>不審查，只看成品</td><td>讀過、測過、能解釋</td></tr>
+          <tr><th>適合</th><td>原型、一次性頁面、個人小工具</td><td>要上線、要維護、多人協作的專案</td></tr>
+          <tr><th>主要代價</th><td>錯誤與安全問題不易察覺，日後難修改</td><td>要花時間閱讀與測試</td></tr>
+        </tbody>
+      </table>
+
+      <h3>工作循環</h3>
+      <ol class="steps">
+        <li>描述：說出想要的成品與使用情境。</li>
+        <li>執行：讓 AI 產生，然後實際打開來看。</li>
+        <li>回饋：指出和預期不同的地方，一次講一件事。</li>
+        <li>重複以上步驟，直到成品符合需求。</li>
+      </ol>
+    </section>
+
+    <section id="example">
+      <h2>實作範例</h2>
+      <p>用三輪對話做出一個讀書會報名頁。</p>
+      <figure class="sample">
+        <figcaption>第一輪：描述成品</figcaption>
+        <pre>請做一個單一 HTML 檔的讀書會報名頁。
+要有活動名稱、時間地點、三句話的介紹，以及填寫姓名與 Email 的報名表單。
+風格簡潔，在手機上也要好讀。</pre>
+      </figure>
+      <figure class="sample">
+        <figcaption>第二輪：針對看到的結果回饋</figcaption>
+        <pre>標題在手機上會斷成三行，請縮小字級。
+送出表單後目前沒有任何反應，請在表單下方顯示「已收到報名」。</pre>
+      </figure>
+      <figure class="sample">
+        <figcaption>第三輪：貼上完整的錯誤訊息</figcaption>
+        <pre>按下送出後，瀏覽器主控台 (console) 出現這個錯誤，請修正：
+Uncaught TypeError: Cannot read properties of null (reading 'value')</pre>
+      </figure>
+      <p>每一輪都只講看得到的問題，不需要知道程式是怎麼寫的。</p>
+    </section>
+
+    <section id="pitfalls">
+      <h2>常見誤區</h2>
+      <ul class="pitfalls">
+        <li>
+          <del>用 AI 寫程式就叫 vibe coding。</del>
+          <p>關鍵在有沒有審查。讀過並理解 AI 寫的程式碼，就不算 vibe coding。</p>
+        </li>
+        <li>
+          <del>一次把所有需求講完，成品會比較完整。</del>
+          <p>需求越多，越難看出哪裡出錯。先做出能動的最小版本，再一項一項加。</p>
+        </li>
+        <li>
+          <del>能跑就可以上線。</del>
+          <p>沒人讀過的程式碼可能藏著安全或資料問題。要給別人使用之前，至少要有人審查並測試。</p>
+        </li>
+        <li>
+          <del>下次開新對話，AI 會記得這個專案的做法。</del>
+          <p>新對話預設不會帶著上一次的決定。要延續做法，得把規則寫成檔案，見<a href="03-agents-md.html">下一篇</a>。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="self-check">
+      <h2>自我檢核</h2>
+      <details class="check">
+        <summary>Vibe coding 和一般的 AI 輔助開發，最大的差別是什麼？</summary>
+        <p>是否審查程式碼。Vibe coding 只看成品，不讀 AI 寫的程式碼。</p>
+      </details>
+      <details class="check">
+        <summary>各舉一個適合與不適合 vibe coding 的情境。</summary>
+        <p>適合：課堂展示用的單頁原型。不適合：會處理個人資料、需要長期維護的系統。</p>
+      </details>
+      <details class="check">
+        <summary>成品出錯時，怎麼回饋最有效？</summary>
+        <p>一次講一個看得到的問題，或直接貼上完整的錯誤訊息。</p>
+      </details>
+    </section>
+
+    <section id="further-reading">
+      <h2>延伸閱讀</h2>
+      <ol class="refs">
+        <li><a href="https://simonwillison.net/2025/Mar/19/vibe-coding/">Simon Willison (2025). Not all AI-assisted programming is vibe coding (but vibe coding rocks)</a>。區分 vibe coding 與一般的 AI 輔助開發，並引用 Karpathy 的原始貼文。</li>
+        <li><a href="https://en.wikipedia.org/wiki/Vibe_coding">Wikipedia，Vibe coding</a>。整理這個詞的來源與後續討論，屬於二手資料。</li>
+      </ol>
+    </section>
+
+    <nav id="note-nav" class="note-nav" aria-label="上一篇與下一篇"></nav>
+  </main>
+
+  <footer class="site-footer">本站每一頁都依專案根目錄的 AGENTS.md 規則製作。</footer>
+</div>
+<script src="../data/notes.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
